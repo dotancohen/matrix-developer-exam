@@ -3,5 +3,9 @@ use DotanCohen\Rest\Rest;
 
 include "../vendor/autoload.php";
 
-$world = Rest::getVersion();
-echo "Hello, {$world}!";
+$version = Rest::getVersion();
+$method_http = Rest::getMethod();
+$route = Rest::getRoute();
+$body = Rest::getBody();
+
+echo "Hello, {$version}!";
