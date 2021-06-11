@@ -17,11 +17,11 @@ class Rest {
 	}
 	
 
-	public static function getRoute() : array
+	public static function getRoute() : string
 	{
-		$uri = $_SERVER['REQUEST_URI'];
-		$parts = explode('/', $uri);
-		return array_slice($parts, 2);
+		$uri = trim($_SERVER['REQUEST_URI'], '/');
+		$uri = trim(strchr($uri, '/'), '/');
+		return $uri;
 	}
 	
 
