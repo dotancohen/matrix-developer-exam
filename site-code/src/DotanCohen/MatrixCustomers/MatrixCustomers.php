@@ -4,7 +4,7 @@ namespace DotanCohen\MatrixCustomers;
 
 class MatrixCustomers {
 	
-	public function __construct($method_http, $route, $requestBody)
+	public function __construct(string $method_http, array $route, string $requestBody)
 	{
 		// Select a method based on inputs
 		var_dump($route);
