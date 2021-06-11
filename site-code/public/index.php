@@ -1,5 +1,7 @@
 <?php
+use DotanCohen\Rest\Rest;
 
-$world = "world";
+include "../vendor/autoload.php";
 
+$world = Rest::getVersion();
 echo "Hello, {$world}!";
