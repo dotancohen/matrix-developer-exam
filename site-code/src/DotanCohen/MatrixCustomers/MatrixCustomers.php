@@ -7,6 +7,7 @@ class MatrixCustomers {
 	
 	protected $className;
 	protected $classMethod;
+	protected $requestParams;
 	protected $requestBody;
 
 	// Routes hard coded here. This could be made more elegant in production.
@@ -40,6 +41,7 @@ class MatrixCustomers {
 			if ( substr($route,0,strlen($k)) === $k) {
 				$class_name = $v[0];
 				$method_class = $v[1];
+				$this->requestParams = self::getParams($k, $route);
 				break;
 			}
 		}
@@ -59,9 +61,16 @@ class MatrixCustomers {
 	}
 	
 	
+	public static function getParams($base_route, $route) : array
+	{
+		$remainder = substr($route, strlen($base_route)+1);
+		return $remainder ? explode('/', $remainder) : [];
+	}
+	
+	
 	public function run() : void
 	{
-		call_user_func([$this->className, $this->classMethod], $this->requestBody);
+		call_user_func([$this->className, $this->classMethod], $this->requestParams, $this->requestBody);
 	}
 	
 	
