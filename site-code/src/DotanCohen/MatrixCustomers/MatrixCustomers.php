@@ -21,7 +21,7 @@ class MatrixCustomers {
 	}
 	
 	
-	public function run()
+	public function run() : void
 	{
 		if (!method_exists($this, $this->classMethod)) {
 			throw new \Exception("Invalid Method");
@@ -31,7 +31,7 @@ class MatrixCustomers {
 	}
 	
 	
-	public function beer()
+	public function beer() : void
 	{
 		echo "BEER";
 	}
