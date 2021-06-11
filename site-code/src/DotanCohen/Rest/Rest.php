@@ -25,7 +25,7 @@ class Rest {
 	}
 	
 
-	public static function getBody() : string
+	public static function getBody() : ?string
 	{
 		// Assumes that body is JSON. In production this would be more robust.
 		$body = file_get_contents('php://input');
