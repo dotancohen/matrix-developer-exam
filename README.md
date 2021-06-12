@@ -46,4 +46,10 @@ This application uses Docker Container to manage multiple containers.
 
     $ mysql -h 172.18.0.3 -u root -p"" matrix < create_seed_database.sql
     ```
+   
+
+## Notes
+
+* Deliberately not using dependency injection on classes. DI is very atypical on vanilla PHP projects not using a framework the encapsulates this (e.g. Laravel).
+
 
