@@ -15,9 +15,9 @@ class RestRoutePost extends RestRoute {
 		$c->date_birth = new \DateTime($body->date_birth);
 		$c->sex = $body->sex;
 		$c->phones = $body->phones;
-		$cust_id = $c->save();
+		$customer = $c->save();
 
-		$resp = ['customer_id' => $cust_id];
+		$resp = ['customer' => $customer];
 		self::response($resp, 201);
 	}
 
