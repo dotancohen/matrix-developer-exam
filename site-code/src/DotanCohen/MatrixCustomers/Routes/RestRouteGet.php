@@ -9,8 +9,27 @@ class RestRouteGet extends RestRoute {
 
 	public function customerPhone($params=[], $body=null) : void
 	{
-		// TODO
-		echo "GET PHONE";
+		if ( count($params)<1 ) {
+			$resp = ['error' => 'Missing Phone'];
+			self::response($resp, 400);
+		}
+
+		$phone = rawurldecode($params[0]);
+		$customers = Customer::getByPhone($phone);
+
+		if ( !$customers ) {
+			$resp = ['customers' => []];
+			self::response($resp, 404);
+			return;
+		}
+
+		$customers_out = [];
+		foreach ($customers as $c) {
+			$customers_out[] = $c->toPublic();
+		}
+
+		$resp = ['customers' => $customers_out];
+		self::response($resp);
 	}
 
 

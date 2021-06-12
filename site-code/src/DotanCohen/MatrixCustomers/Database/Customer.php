@@ -140,11 +140,25 @@ class Customer extends ActiveRecord {
 	}
 
 
-	public static function getByPhone($phone) : array
+	/**
+	 * Return an array of Customers matching a phone number
+	 *
+	 * @param string $phone
+	 * @return Customer[]
+	 * @throws \Exception
+	 */
+	public static function getByPhone(string $phone) : array
 	{
-		// TODO
-		
-		return [];
+		$customers = [];
+		$phone_numbers = CustomerPhoneNumber::getBySearch($phone);
+
+		foreach ($phone_numbers as $phone) {
+			if ( !array_key_exists($phone->customer_id, $customers) ) {
+				$customers[$phone->customer_id] = Customer::getById($phone->customer_id);
+			}
+		}
+
+		return $customers;
 	}
 
 

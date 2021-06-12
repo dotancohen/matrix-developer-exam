@@ -8,9 +8,9 @@ class CustomerPhoneNumber extends ActiveRecord {
 	
 	protected static $table = 'customer_phone_numbers';
 
-	public $customer_id;
-	public $phone_number;
-	protected $phone_number_search;
+	public int $customer_id;
+	public string $phone_number;
+	protected string $phone_number_search;
 	
 	
 	public function load(int $id) : void
@@ -97,7 +97,7 @@ class CustomerPhoneNumber extends ActiveRecord {
 	}
 
 
-	public static function getSearchString($phone_number) : string
+	public static function getSearchString(string $phone_number) : string
 	{
 		return preg_replace('/\D/', '', $phone_number);
 	}
@@ -134,6 +134,38 @@ class CustomerPhoneNumber extends ActiveRecord {
 	}
 
 
+	/**
+	 * Return an array of phone numbers matching a search string
+	 *
+	 * @param string $search
+	 * @return CustomerPhoneNumber[]
+	 * @throws \Exception
+	 */
+	public static function getBySearch(string $search) : array
+	{
+		$pdo = PdoFactory::getPdo();
+		$table = self::$table;
+		$phone_numbers = [];
+
+		$sql = "SELECT id";
+		$sql.= " FROM {$table}";
+		$sql.= " WHERE phone_number_search LIKE :phone";
+
+		$params = [
+			':phone' => self::getSearchString($search),
+		];
+
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute($params);
+		while ( $row = $stmt->fetch(\PDO::FETCH_ASSOC) ) {
+			// Despite requiring multiple queries, this ensures consistency in the output
+			$phone_numbers[] = self::getById($row['id']);
+		}
+
+		return $phone_numbers;
+	}
+
+
 }
 
 /*
@@ -141,7 +173,7 @@ CREATE TABLE customer_phone_numbers (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   customer_id INT NOT NULL,
   phone_number VARCHAR(127) NULL,
-  phone_number_search BIGINT UNSIGNED NULL,
+  phone_number_search VARCHAR(127) NULL,
   INDEX (phone_number)
 );
 /* */
