@@ -22,6 +22,23 @@ services:
     networks:
       - matrix
 
+  mysql:
+    image: mysql:8
+    user: 1000:1000
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "233306::3306"
+    volumes:
+      - ./services-docker/db-data:/var/lib/mysql
+    networks:
+      - matrix
+    environment:
+      MYSQL_DATABASE: matrix
+      MYSQL_USERNAME: matrix
+      MYSQL_PASSWORD: k9Hy3lE1inb4
+      MYSQL_ROOT_PASSWORD: k9Hy3lE1inb4
+
   php:
     build:
       context: .
@@ -33,8 +50,9 @@ services:
     user: 1000:1000
     ports:
     - "9000:9000" # Not using port prefix
+    depends_on:
+      - mysql
     networks:
       - matrix
     environment:
       XDEBUG_CONFIG: remote_host=latitwo
-
