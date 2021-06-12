@@ -1,6 +1,6 @@
 <?php
 
-namespace DotanCohen\MatrixCustomers;
+namespace DotanCohen\MatrixCustomers\Routes;
 
 class RestRouteDelete extends RestRoute {
 	
