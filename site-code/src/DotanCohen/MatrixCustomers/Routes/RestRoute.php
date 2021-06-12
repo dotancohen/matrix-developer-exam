@@ -2,7 +2,7 @@
 
 namespace DotanCohen\MatrixCustomers\Routes;
 
-class RestRoute {
+abstract class RestRoute {
 
 	/**
 	 * Provide a uniform response to the client
