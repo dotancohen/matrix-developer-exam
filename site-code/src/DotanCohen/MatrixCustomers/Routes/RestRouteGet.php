@@ -24,9 +24,14 @@ class RestRouteGet extends RestRoute {
 		$id_gov = $params[0];
 		$c = Customer::getByGovId($id_gov);
 
+		if ( !isset($c->id) ) {
+			$resp = ['customer' => null];
+			self::response($resp, 404);
+			return;
+		}
+
 		$resp = ['customer' => $c->toPublic()];
-		$code = is_null($c->id) ? 404 : 200;
-		self::response($resp, $code);
+		self::response($resp);
 	}
 
 }
