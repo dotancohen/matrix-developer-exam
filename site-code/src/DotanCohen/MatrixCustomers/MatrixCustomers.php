@@ -12,24 +12,24 @@ class MatrixCustomers {
 
 	// Routes hard coded here. This could be made more elegant in production.
 	// Remove leading and trailing slashes. In prod this would be more robust.
-	const ROUTES = array(
-		'GET' => array(
+	const ROUTES =[
+		'GET' => [
 			'customer/id_gov' => ['RestRouteGet', 'customerIdGov'],
 			'customer/phone' => ['RestRouteGet', 'customerPhone'],
-		),
-		'POST' => array(
+		],
+		'POST' => [
 			'customer' => ['RestRoutePost', 'customer'],
-		),
-		'PUT' => array(
+		],
+		'PUT' => [
 			'customer' => ['RestRoutePut', 'customer'],
-		),
-		'DELETE' => array(
+		],
+		'DELETE' => [
 			'customer' => ['RestRouteDelete', 'customer'],
-		),
-	);
+		],
+	];
 	
 	
-	public function __construct(string $method_http, string $route, string $requestBody=null)
+	public function __construct(string $method_http, string $route, ?\stdClass $requestBody=null)
 	{
 		// Obviously in production this would be far more elegant
 		if (!array_key_exists($method_http, self::ROUTES)) {
