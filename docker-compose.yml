@@ -45,6 +45,7 @@ services:
       dockerfile: ./services-docker/php/Dockerfile
     volumes:
       - ./site-code:/var/www/html
+      - ./services-docker/php/docker-php.ini:/usr/local/etc/php/conf.d/docker-php.ini
       - ./services-docker/php/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     working_dir: /var/www/html
     user: 1000:1000
