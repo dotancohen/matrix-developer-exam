@@ -83,9 +83,31 @@ class Customer extends ActiveRecord {
 
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute($params);
+		$this->id = $pdo->lastInsertId();
 
 		// TODO check saved
 
+		foreach ($this->phones as $phone) {
+			if ( is_string($phone) ) {
+				$p = new CustomerPhoneNumber();
+				$p->customer_id = $this->id;
+				$p->phone_number = $phone;
+				$p->save();
+			}
+		}
+
+		return self::getById($this->id);
+	}
+
+
+	protected function update() : Customer
+	{
+		// UPDATE OBJECT FIELDS
+
+
+
+
+		// UPDATE PHONE NUMBERS
 		$current_phones = CustomerPhoneNumber::getByCustomer($this->id);
 		foreach ($this->phones as $phone) {
 			$k = array_search($phone, $current_phones);
@@ -100,15 +122,9 @@ class Customer extends ActiveRecord {
 			// todo remove phone from client
 		}
 
-		return $pdo->lastInsertId();
-	}
 
-
-	protected function update() : int
-	{
-		// todo
-
-		return 0;
+		// RETURN ID
+		return $this->id;
 	}
 
 

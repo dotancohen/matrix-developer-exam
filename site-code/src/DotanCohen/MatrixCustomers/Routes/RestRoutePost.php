@@ -17,7 +17,7 @@ class RestRoutePost extends RestRoute {
 		$c->phones = $body->phones;
 		$customer = $c->save();
 
-		$resp = ['customer' => $customer];
+		$resp = ['customer' => $customer->toPublic()];
 		self::response($resp, 201);
 	}
 
