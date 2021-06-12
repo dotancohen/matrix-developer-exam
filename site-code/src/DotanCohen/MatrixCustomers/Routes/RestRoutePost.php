@@ -18,7 +18,7 @@ class RestRoutePost extends RestRoute {
 		$cust_id = $c->save();
 
 		$resp = ['customer_id' => $cust_id];
-		self::response($resp);
+		self::response($resp, 201);
 	}
 
 }
