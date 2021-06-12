@@ -11,9 +11,16 @@ class RestRouteDelete extends RestRoute {
 		if ( count($params)<1 ) {
 			$resp = ['error' => 'Missing Phone'];
 			self::response($resp, 400);
+			return;
 		}
 
-		$id = rawurldecode($params[0]);
+		if ( !is_numeric($params[0]) ) {
+			$resp = ['error' => 'ID is not an integer'];
+			self::response($resp, 400);
+			return;
+		}
+
+		$id =(int)$params[0];
 		Customer::deleteByID($id);
 
 		$resp = ['deleted'];

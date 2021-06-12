@@ -11,9 +11,16 @@ class RestRoutePut extends RestRoute {
 		if ( count($params)<1 ) {
 			$resp = ['error' => 'Missing ID'];
 			self::response($resp, 400);
+			return;
 		}
 
-		$id = $params[0];
+		if ( !is_numeric($params[0]) ) {
+			$resp = ['error' => 'ID is not an integer'];
+			self::response($resp, 400);
+			return;
+		}
+
+		$id = (int)$params[0];
 		$c = Customer::getById($id);
 
 		if ( !isset($c->id) ) {
