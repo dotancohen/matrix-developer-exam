@@ -77,11 +77,9 @@ class CustomerPhoneNumber extends ActiveRecord {
 	}
 
 
-	public function toPublic() : array
+	public function toPublic() : string
 	{
-		// todo
-
-		return [];
+		return $this->phone_number;
 	}
 
 

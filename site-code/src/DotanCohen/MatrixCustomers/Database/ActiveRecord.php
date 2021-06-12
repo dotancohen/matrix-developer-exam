@@ -25,7 +25,7 @@ abstract class ActiveRecord {
 
 	abstract public function validate() : bool;
 
-	abstract public function toPublic() : array;
+	abstract public function toPublic();
 
 	/**
 	 * Return an object by ID

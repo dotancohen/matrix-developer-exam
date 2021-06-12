@@ -13,6 +13,7 @@ class Customer extends ActiveRecord {
 	public string $name_last;
 	public \DateTime $date_birth;
 	public string $sex;
+	/** @var CustomerPhoneNumber[] $phones */
 	public array $phones;
 	
 	protected static $sex_values_valid = ['male', 'female', 'other'];
@@ -133,6 +134,11 @@ class Customer extends ActiveRecord {
 
 	public function toPublic() : array
 	{
+		$phones_public = [];
+		foreach ($this->phones as $phone) {
+			$phones_public[] = $phone->toPublic();
+		}
+
 		$public = [
 			'id' => $this->id,
 			'id_gov' => $this->id_gov,
@@ -140,7 +146,7 @@ class Customer extends ActiveRecord {
 			'name_last' => $this->name_last,
 			'date_birth' => $this->date_birth->format(self::DATETIME_BIRTH_PUBLIC),
 			'sex' => $this->sex,
-			'phones' => $this->phones,
+			'phones' => $phones_public,
 		];
 
 		return $public;
