@@ -6,27 +6,46 @@ This application is an example REST API to perform CRUD operations against a dat
 
 ## Connecting to the API
 
+API endpoints can have optional per-endpoint authentication required, all configured endpoints require this authentication. Use a standard bearer authentication header with the following value: `XPwb94dZfCP1pWdYPzR9p19HBT85kYutAMY0csPDs3B1OkcChKCJhXQkZlrXLmOV`
+
 1. Determine base address of server running in Docker container
     ```
     $ ./server-address.sh 
     172.21.0.4
     ```
 
-2. Query an API enpoint preceded by version string `1.0`
+2. Using the address from the previous step, query an API enpoint preceded by version string `1.0`
     ```
-    $ curl --url "http://172.21.0.4/0.1/customer/phone/"
-    GET PHONE
+    $ curl --url "http://172.26.0.4/0.1/customer/phone/058-767-8311" -H "Authorization: Bearer XPwb94dZfCP1pWdYPzR9p19HBT85kYutAMY0csPDs3B1OkcChKCJhXQkZlrXLmOV"
+    {"customers":[{"id":3,"id_gov":"317907003","name_first":"Rachel","name_last":"Sara","date_birth":"2013-09-29","sex":"female","phones":["058-767-8311","(972) 52-034-1936","054-776-9563 ex 13"]}]}
     ```
 
 
 ## Available endpoints
 
+* `GET /0.1/customer/id/51`
 * `GET /0.1/customer/id_gov/51`
 * `GET /0.1/customer/phone/51`
 * `POST /0.1/customer`
-* `PUT /0.1/customer/51`
-* `DELETE /0.1/customer/51`
+* `PUT /0.1/customer/51` JSON Body
+* `DELETE /0.1/customer/51` JSON Body
 
+### JSON Body Format
+
+```
+{
+  "id_gov": "317907011",
+  "name_first": "Noam",
+  "name_last": "Orr",
+  "date_birth": "2004-04-01",
+  "sex": "female",
+  "phones": [
+    "054-232-7878",
+    "(972) 52-123-4567",
+    "04-531-1200 ex 42"
+  ]
+}
+```
 
 ## Running with Docker
 
