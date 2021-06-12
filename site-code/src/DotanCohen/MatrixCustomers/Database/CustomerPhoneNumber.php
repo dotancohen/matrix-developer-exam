@@ -83,7 +83,7 @@ class CustomerPhoneNumber extends ActiveRecord {
 	{
 		// todo
 		
-		return 0;
+		return self::getById($this->id);
 	}
 	
 	
@@ -115,6 +115,13 @@ class CustomerPhoneNumber extends ActiveRecord {
 	}
 
 
+	/**
+	 * Return an array of phone numbers for a specific customer
+	 *
+	 * @param int $customer_id
+	 * @return CustomerPhoneNumber[]
+	 * @throws \Exception
+	 */
 	public static function getByCustomer(int $customer_id) : array
 	{
 		$pdo = PdoFactory::getPdo();
@@ -169,6 +176,31 @@ class CustomerPhoneNumber extends ActiveRecord {
 		}
 
 		return $phone_numbers;
+	}
+
+
+	/**
+	 * Delete a phone number
+	 *
+	 * @param int $id
+	 * @throws \Exception
+	 */
+	public static function deleteByID(int $id) : void
+	{
+		$pdo = PdoFactory::getPdo();
+		$table = self::$table;
+
+		$sql = "DELETE";
+		$sql.= " FROM {$table}";
+		$sql.= " WHERE id=:id";
+
+		$params = [
+			':id' => $id,
+		];
+
+		$stmt = $pdo->prepare($sql);
+
+		$stmt->execute($params);
 	}
 
 

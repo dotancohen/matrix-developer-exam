@@ -67,7 +67,6 @@ class Customer extends ActiveRecord {
 		$pdo = PdoFactory::getPdo();
 		$table = self::$table;
 
-
 		$sql = "INSERT INTO {$table} (id_gov, name_first, name_last, date_birth, sex)";
 		$sql.= " VALUES (:id_gov, :name_first, :name_last, :date_birth, :sex)";
 
@@ -87,10 +86,7 @@ class Customer extends ActiveRecord {
 
 		foreach ($this->phones as $phone) {
 			if ( is_string($phone) ) {
-				$p = new CustomerPhoneNumber();
-				$p->customer_id = $this->id;
-				$p->phone_number = $phone;
-				$p->save();
+				$this->addPhoneNumber($phone);
 			}
 		}
 
@@ -100,29 +96,60 @@ class Customer extends ActiveRecord {
 
 	protected function update() : Customer
 	{
+		$pdo = PdoFactory::getPdo();
+		$table = self::$table;
+
 		// UPDATE OBJECT FIELDS
 
+		$sql = "UPDATE {$table} SET";
+		$sql.= " id_gov=:id_gov,";
+		$sql.= " name_first=:name_first,";
+		$sql.= " name_last=:name_last,";
+		$sql.= " date_birth=:date_birth,";
+		$sql.= " sex=:sex";
+		$sql.= " WHERE id=:id";
+		$sql.= " LIMIT 1";
 
+		$params = [
+			':id_gov' => $this->id_gov,
+			':name_first' => $this->name_first,
+			':name_last' => $this->name_last,
+			':date_birth' => $this->date_birth->format(self::DATETIME_MYSQL),
+			':sex' => $this->sex,
+			':id' => $this->id,
+		];
+
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute($params);
+		var_dump($stmt->debugDumpParams());
 
 
 		// UPDATE PHONE NUMBERS
+
 		$current_phones = CustomerPhoneNumber::getByCustomer($this->id);
 		foreach ($this->phones as $phone) {
 			$k = array_search($phone, $current_phones);
 			if ( $k === false ) {
-				// TODO Add phone number to client
+				$this->addPhoneNumber($phone);
 			} else{
 				unset($current_phones[$k]);
 			}
 		}
 
 		foreach ($current_phones as $current_phone) {
-			// todo remove phone from client
+			CustomerPhoneNumber::deleteByID($current_phone->id);
 		}
 
+		return self::getById($this->id);
+	}
 
-		// RETURN ID
-		return $this->id;
+
+	protected function addPhoneNumber(string $phone) : void
+	{
+		$p = new CustomerPhoneNumber();
+		$p->customer_id = $this->id;
+		$p->phone_number = $phone;
+		$p->save();
 	}
 
 
