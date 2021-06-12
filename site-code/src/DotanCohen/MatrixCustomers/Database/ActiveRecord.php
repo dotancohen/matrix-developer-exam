@@ -19,9 +19,15 @@ abstract class ActiveRecord {
 
 	abstract public function load(int $id) : void;
 
-	abstract public function save() : int;
+	/**
+	 * @return static
+	 */
+	abstract public function save();
 
-	abstract protected function update() : int;
+	/**
+	 * @return static
+	 */
+	abstract protected function update();
 
 	abstract public function validate() : bool;
 

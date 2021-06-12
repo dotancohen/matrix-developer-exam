@@ -13,7 +13,7 @@ class Customer extends ActiveRecord {
 	public string $name_last;
 	public \DateTime $date_birth;
 	public string $sex;
-	/** @var CustomerPhoneNumber[] $phones */
+	/** @var CustomerPhoneNumber[]|string[] $phones */
 	public array $phones;
 	
 	protected static $sex_values_valid = ['male', 'female', 'other'];
@@ -56,7 +56,7 @@ class Customer extends ActiveRecord {
 	}
 
 	
-	public function save() : int
+	public function save() : Customer
 	{
 		if ( !$this->validate() ) {
 			throw new \Exception("Invalid object");

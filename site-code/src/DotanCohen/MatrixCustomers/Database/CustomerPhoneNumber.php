@@ -38,7 +38,7 @@ class CustomerPhoneNumber extends ActiveRecord {
 	}
 
 	
-	public function save() : int
+	public function save() : CustomerPhoneNumber
 	{
 		$valid = $this->validate();
 		// TODO
@@ -53,7 +53,7 @@ class CustomerPhoneNumber extends ActiveRecord {
 	}
 	
 	
-	protected function update() : int
+	protected function update() : CustomerPhoneNumber
 	{
 		// todo
 		
@@ -71,9 +71,15 @@ class CustomerPhoneNumber extends ActiveRecord {
 		}
 
 		// Set phone_number_search
-		$this->phone_number_search = preg_replace('/\D/', '', $this->phone_number);
+		$this->phone_number_search = self::getSearchString($this->phone_number);
 
 		return empty($this->validation_errors);
+	}
+
+
+	public static function getSearchString($phone_number) : string
+	{
+		return preg_replace('/\D/', '', $phone_number);
 	}
 
 
