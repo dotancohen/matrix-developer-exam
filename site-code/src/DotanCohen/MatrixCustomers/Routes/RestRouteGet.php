@@ -7,6 +7,27 @@ use DotanCohen\MatrixCustomers\Database\Customer;
 class RestRouteGet extends RestRoute {
 
 
+	public function customerid($params=[], $body=null) : void
+	{
+		if ( count($params)<1 ) {
+			$resp = ['error' => 'Missing ID'];
+			self::response($resp, 400);
+		}
+
+		$id = $params[0];
+		$c = Customer::getById($id);
+
+		if ( !isset($c->id) ) {
+			$resp = ['customer' => null];
+			self::response($resp, 404);
+			return;
+		}
+
+		$resp = ['customer' => $c->toPublic()];
+		self::response($resp);
+	}
+
+
 	public function customerPhone($params=[], $body=null) : void
 	{
 		if ( count($params)<1 ) {
@@ -36,7 +57,7 @@ class RestRouteGet extends RestRoute {
 	public function customerIdGov($params=[], $body=null) : void
 	{
 		if ( count($params)<1 ) {
-			$resp = ['error' => 'Missing ID'];
+			$resp = ['error' => 'Missing Government ID'];
 			self::response($resp, 400);
 		}
 

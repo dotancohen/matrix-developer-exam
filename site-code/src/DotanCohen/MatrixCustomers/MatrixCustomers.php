@@ -14,6 +14,7 @@ class MatrixCustomers {
 	// Remove leading and trailing slashes. In prod this would be more robust.
 	const ROUTES =[
 		'GET' => [
+			'customer' => ['RestRouteGet', 'customerID'],
 			'customer/id_gov' => ['RestRouteGet', 'customerIdGov'],
 			'customer/phone' => ['RestRouteGet', 'customerPhone'],
 		],

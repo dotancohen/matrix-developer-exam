@@ -31,6 +31,12 @@ class CustomerPhoneNumber extends ActiveRecord {
 		$stmt->execute($params);
 		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
+		// If id does not exist then explicitly set $this->id to null and return
+		if ( !$row ) {
+			$this->id = null;
+			return;
+		}
+
 		$this->id = $id;
 		$this->customer_id = $row['customer_id'];
 		$this->phone_number = $row['phone_number'];

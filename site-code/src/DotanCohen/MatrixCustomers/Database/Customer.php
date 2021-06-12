@@ -36,11 +36,9 @@ class Customer extends ActiveRecord {
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute($params);
 		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
-		
-		// TODO
+
 		// If id does not exist then explicitly set $this->id to null and return
-		// Also set in phone numbers table
-		if ( is_null($row) ) { // Maybe change condition
+		if ( !$row ) {
 			$this->id = null;
 			return;
 		}
