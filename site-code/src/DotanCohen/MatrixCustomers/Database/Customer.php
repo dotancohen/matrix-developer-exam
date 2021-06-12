@@ -145,6 +145,39 @@ class Customer extends ActiveRecord {
 		return $public;
 	}
 
+
+	/**
+	 * Return a Customer by government ID, or null if not found
+	 *
+	 * @param string $id_gov
+	 * @return Customer|null
+	 * @throws \Exception
+	 */
+	public static function getByGovId(string $id_gov) : ?Customer
+	{
+		$pdo = PdoFactory::getPdo();
+		$table = self::$table;
+
+		$sql = "SELECT id";
+		$sql.= " FROM {$table}";
+		$sql.= " WHERE id_gov=:id_gov";
+		$sql.= " LIMIT 1";
+
+		$params = [
+			':id_gov' => $id_gov,
+		];
+
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute($params);
+		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
+		if ( !$row ) {
+			return null;
+		}
+
+		// Despite requiring two queries, this ensures consistency in the output
+		return self::getById($row['id']);
+	}
+
 }
 
 /*
