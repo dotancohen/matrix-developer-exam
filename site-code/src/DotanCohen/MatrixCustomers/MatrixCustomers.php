@@ -50,12 +50,12 @@ class MatrixCustomers {
 			throw new \Exception("Invalid Route");
 		}
 
-		$file_name = __DIR__."/{$class_name}.php";
+		$file_name = __DIR__."/Routes/{$class_name}.php";
 		if ( !file_exists($file_name) ) {
 			throw new \Exception("Unsupported HTTP Method");
 		}
 		
-		$this->className = __NAMESPACE__ . "\\" . $class_name;
+		$this->className = __NAMESPACE__ . "\\Routes\\" . $class_name;
 		$this->classMethod = $method_class;
 		$this->requestBody = $requestBody;
 	}
