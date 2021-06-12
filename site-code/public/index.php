@@ -1,4 +1,5 @@
 <?php
+use DotanCohen\PdoFactory\PdoFactory;
 use DotanCohen\Rest\Rest;
 use DotanCohen\MatrixCustomers\MatrixCustomers;
 
@@ -9,6 +10,10 @@ if (!file_exists($ini_file)) {
 	throw new \Exception("Dotenv File Not Found.");
 }
 $env = parse_ini_file($ini_file);
+
+
+PdoFactory::init($env['MYSQL_HOST'], $env['MYSQL_PORT'], $env['MYSQL_DATABASE'], $env['MYSQL_USERNAME'], $env['MYSQL_PASSWORD']);
+
 
 $version = Rest::getVersion(); // Normally we would invoke different classes per version
 $method_http = Rest::getMethod();
