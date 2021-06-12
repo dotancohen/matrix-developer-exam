@@ -37,7 +37,9 @@ class MatrixCustomers {
 	{
 		// Obviously in production this would be far more elegant
 		if (!array_key_exists($method_http, self::ROUTES)) {
-			throw new \Exception("Unsupported HTTP Method");
+			$resp = ["error" => "Unsupported HTTP Method"];
+			RestRoute::response($resp, 405);
+			exit();
 		}
 
 		$method_class = null;
@@ -46,7 +48,8 @@ class MatrixCustomers {
 				// $v[0] Route Method
 				// $v[1] Requires Auth
 				if ( $v[1] && !self::authenticateUser() ) {
-					RestRoute::returnUnauthorized();
+					$resp = ["error" => "Unauthenticated user"];
+					RestRoute::response($resp, 401);
 					exit();
 				}
 				$class_name = $v[0][0];
@@ -57,12 +60,16 @@ class MatrixCustomers {
 		}
 
 		if ( !$method_class ) {
-			throw new \Exception("Invalid Route");
+			$resp = ["error" => "Invalid Route"];
+			RestRoute::response($resp, 404);
+			exit();
 		}
 
 		$file_name = __DIR__."/Routes/{$class_name}.php";
 		if ( !file_exists($file_name) ) {
-			throw new \Exception("Unsupported HTTP Method");
+			$resp = ["error" => "Unsupported HTTP Method"];
+			RestRoute::response($resp, 405);
+			exit();
 		}
 		
 		$this->className = __NAMESPACE__ . "\\Routes\\" . $class_name;

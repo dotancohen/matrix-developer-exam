@@ -6,13 +6,14 @@ abstract class RestRoute {
 
 	const HTTP_STATUS_CODES = [200, 201, 204, 400, 401, 403, 404, 405, 409, 500, 503];
 
+
 	/**
 	 * Provide a uniform response to the client
 	 *
 	 * @param int $code HTTP Response Code
 	 * @param array $response
 	 */
-	protected function response(array $response, int $code=200) : void
+	public static function response(array $response, int $code=200) : void
 	{
 		if ( !in_array($code, self::HTTP_STATUS_CODES) ) {
 			$code = 200;
@@ -35,16 +36,5 @@ abstract class RestRoute {
 		header('cache-control: no-cache, no-store');
 	}
 
-
-	public static function returnUnauthorized()
-	{
-		http_response_code(401);
-		self::echoHeaders();
-
-		$response = [
-			"error" => "Unauthenticated user"
-		];
-		echo json_encode($response);
-	}
 
 }
