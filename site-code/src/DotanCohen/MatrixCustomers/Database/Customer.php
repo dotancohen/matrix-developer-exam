@@ -75,7 +75,7 @@ class Customer extends ActiveRecord {
 			':id_gov' => $this->id_gov,
 			':name_first' => $this->name_first,
 			':name_last' => $this->name_last,
-			':date_birth' => $this->date_birth->format(self::MYSQL_DATETIME),
+			':date_birth' => $this->date_birth->format(self::DATETIME_MYSQL),
 			':sex' => $this->sex,
 		];
 
@@ -127,6 +127,22 @@ class Customer extends ActiveRecord {
 		// TODO
 		
 		return [];
+	}
+
+
+	public function toPublic() : array
+	{
+		$public = [
+			'id' => $this->id,
+			'id_gov' => $this->id_gov,
+			'name_first' => $this->name_first,
+			'name_last' => $this->name_last,
+			'date_birth' => $this->date_birth->format(self::DATETIME_BIRTH_PUBLIC),
+			'sex' => $this->sex,
+			'phones' => $this->phones,
+		];
+
+		return $public;
 	}
 
 }

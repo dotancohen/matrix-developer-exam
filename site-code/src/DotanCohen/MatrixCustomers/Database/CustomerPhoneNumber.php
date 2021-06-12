@@ -74,7 +74,15 @@ class CustomerPhoneNumber extends ActiveRecord {
 
 		return empty($this->validation_errors);
 	}
-	
+
+
+	public function toPublic() : array
+	{
+		// todo
+
+		return [];
+	}
+
 
 	public static function getByCustomer(int $customer_id) : array
 	{
