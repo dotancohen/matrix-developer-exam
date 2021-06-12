@@ -16,6 +16,7 @@ CREATE TABLE customers (
 
 CREATE TABLE customer_phone_numbers (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  customer_id INT NOT NULL,
   phone_number VARCHAR(127) NULL,
   phone_number_search BIGINT UNSIGNED NULL,
   INDEX (phone_number)
