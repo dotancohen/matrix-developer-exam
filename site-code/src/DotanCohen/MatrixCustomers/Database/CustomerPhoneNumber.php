@@ -28,7 +28,8 @@ class CustomerPhoneNumber extends ActiveRecord {
 		];
 		
 		$stmt = $pdo->prepare($sql);
-		$row = $stmt->execute($params)->fetch(\PDO::FETCH_ASSOC);
+		$stmt->execute($params);
+		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
 		$this->id = $id;
 		$this->customer_id = $row['customer_id'];

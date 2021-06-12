@@ -33,7 +33,8 @@ class Customer extends ActiveRecord {
 		];
 
 		$stmt = $pdo->prepare($sql);
-		$row = $stmt->execute($params)->fetch(\PDO::FETCH_ASSOC);
+		$stmt->execute($params);
+		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
 		
 		// TODO
 		// If id does not exist then explicitly set $this->id to null and return
@@ -80,7 +81,7 @@ class Customer extends ActiveRecord {
 		];
 
 		$stmt = $pdo->prepare($sql);
-		$row = $stmt->execute($params);
+		$stmt->execute($params);
 
 		// TODO check saved
 
@@ -122,7 +123,7 @@ class Customer extends ActiveRecord {
 	}
 
 
-	public function getByPhone($id) : array
+	public static function getByPhone($phone) : array
 	{
 		// TODO
 		
