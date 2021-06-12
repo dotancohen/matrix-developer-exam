@@ -2,6 +2,9 @@
 
 namespace DotanCohen\MatrixCustomers;
 
+use DotanCohen\MatrixCustomers\Routes\RestRoute;
+use DotanCohen\PdoFactory\PdoFactory;
+
 class MatrixCustomers {
 
 	
@@ -14,18 +17,18 @@ class MatrixCustomers {
 	// Remove leading and trailing slashes. In prod this would be more robust.
 	const ROUTES =[
 		'GET' => [
-			'customer' => ['RestRouteGet', 'customerID'],
-			'customer/id_gov' => ['RestRouteGet', 'customerIdGov'],
-			'customer/phone' => ['RestRouteGet', 'customerPhone'],
+			'customer' => [['RestRouteGet', 'customerID'], true],
+			'customer/id_gov' => [['RestRouteGet', 'customerIdGov'], true],
+			'customer/phone' => [['RestRouteGet', 'customerPhone'], true],
 		],
 		'POST' => [
-			'customer' => ['RestRoutePost', 'customer'],
+			'customer' => [['RestRoutePost', 'customer'], true],
 		],
 		'PUT' => [
-			'customer' => ['RestRoutePut', 'customer'],
+			'customer' => [['RestRoutePut', 'customer'], true],
 		],
 		'DELETE' => [
-			'customer' => ['RestRouteDelete', 'customer'],
+			'customer' => [['RestRouteDelete', 'customer'], true],
 		],
 	];
 	
@@ -40,8 +43,14 @@ class MatrixCustomers {
 		$method_class = null;
 		foreach (self::ROUTES[$method_http] as $k=>$v) {
 			if ( substr($route,0,strlen($k)) === $k) {
-				$class_name = $v[0];
-				$method_class = $v[1];
+				// $v[0] Route Method
+				// $v[1] Requires Auth
+				if ( $v[1] && !self::authenticateUser() ) {
+					RestRoute::returnUnauthorized();
+					exit();
+				}
+				$class_name = $v[0][0];
+				$method_class = $v[0][1];
 				$this->requestParams = self::getParams($k, $route);
 				break;
 			}
@@ -73,6 +82,41 @@ class MatrixCustomers {
 	{
 		call_user_func([$this->className, $this->classMethod], $this->requestParams, $this->requestBody);
 	}
-	
-	
+
+
+	protected static function authenticateUser() : bool
+	{
+		$headers = apache_request_headers();
+		if ( !isset($headers['Authorization']) ) {
+			return false;
+		}
+
+		$api_key_parts = explode(' ', $headers['Authorization']);
+		if ( count($api_key_parts)<2 || strtolower($api_key_parts[0])!=='bearer' ) {
+			return false;
+		}
+
+		$pdo = PdoFactory::getPdo();
+		$table = "users";
+
+		$sql = "SELECT id";
+		$sql.= " FROM {$table}";
+		$sql.= " WHERE api_key=:api_key";
+		$sql.= " LIMIT 1";
+
+		$params = [
+			':api_key' => $api_key_parts[1],
+		];
+
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute($params);
+		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
+		if ( !$row ) {
+			return false;
+		}
+
+		return true;
+	}
+
+
 }

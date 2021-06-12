@@ -18,7 +18,14 @@ abstract class RestRoute {
 			$code = 200;
 		}
 		http_response_code($code);
+		self::echoHeaders();
 
+		echo json_encode($response);
+	}
+
+
+	protected static function echoHeaders() : void
+	{
 		header('content-type: application/json');
 		header('access-control-allow-credentials: true');
 		//header('access-control-allow-methods: GET, POST, HEAD, OPTIONS, DELETE');
@@ -26,9 +33,18 @@ abstract class RestRoute {
 		header('access-control-allow-origin: *');
 		header('access-control-max-age: 300');
 		header('cache-control: no-cache, no-store');
-
-		echo json_encode($response);
 	}
 
+
+	public static function returnUnauthorized()
+	{
+		http_response_code(401);
+		self::echoHeaders();
+
+		$response = [
+			"error" => "Unauthenticated user"
+		];
+		echo json_encode($response);
+	}
 
 }
