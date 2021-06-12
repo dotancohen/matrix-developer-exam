@@ -3,5 +3,8 @@
     "psr-4": {
       "DotanCohen\\": "src/DotanCohen"
     }
+  },
+  "require": {
+    "ext-pdo": "*"
   }
 }
