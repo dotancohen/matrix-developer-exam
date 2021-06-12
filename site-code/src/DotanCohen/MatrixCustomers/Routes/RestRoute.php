@@ -4,7 +4,7 @@ namespace DotanCohen\MatrixCustomers\Routes;
 
 abstract class RestRoute {
 
-	const HTTP_STATUS_CODES = [200, 201, 400, 401, 403, 404, 405, 409, 500, 503];
+	const HTTP_STATUS_CODES = [200, 201, 204, 400, 401, 403, 404, 405, 409, 500, 503];
 
 	/**
 	 * Provide a uniform response to the client

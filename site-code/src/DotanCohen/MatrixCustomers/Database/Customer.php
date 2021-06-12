@@ -215,6 +215,35 @@ class Customer extends ActiveRecord {
 		return self::getById($row['id']);
 	}
 
+
+	/**
+	 * Delete a customer and all their related information
+	 *
+	 * @param int $id
+	 * @throws \Exception
+	 */
+	public static function deleteByID(int $id) : void
+	{
+		$pdo = PdoFactory::getPdo();
+		$table = self::$table;
+
+		$sql = "DELETE";
+		$sql.= " FROM {$table}";
+		$sql.= " WHERE id=:id";
+
+		$params = [
+			':id' => $id,
+		];
+
+		$stmt = $pdo->prepare($sql);
+
+		$pdo->beginTransaction();
+		$stmt->execute($params);
+		CustomerPhoneNumber::deleteByCustomer($id, $pdo);
+		$pdo->commit();
+	}
+
+
 }
 
 /*

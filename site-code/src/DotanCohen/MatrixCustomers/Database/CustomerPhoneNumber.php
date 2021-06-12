@@ -166,6 +166,33 @@ class CustomerPhoneNumber extends ActiveRecord {
 	}
 
 
+	/**
+	 * Delete all phone numbers for a specific customer
+	 *
+	 * @param int $customer_id
+	 * @param \PDO|null $pdo Optional PDO object to enable transactions
+	 * @throws \Exception
+	 */
+	public static function deleteByCustomer(int $customer_id, ?\PDO $pdo=null) : void
+	{
+		if ( !$pdo ) {
+			$pdo = PdoFactory::getPdo();
+		}
+
+		$table = self::$table;
+
+		$sql = "DELETE";
+		$sql.= " FROM {$table}";
+		$sql.= " WHERE customer_id=:customer_id";
+
+		$params = [
+			':customer_id' => $customer_id,
+		];
+
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute($params);
+	}
+
 }
 
 /*
