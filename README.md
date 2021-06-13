@@ -69,7 +69,7 @@ This application uses Docker Container to manage multiple containers.
 
 ## Notes
 
-* Though PHP 8 offers many features that would have been helpful (e.g. `str_starts_with()`, union types, and static return types), this application is coding in PHP 7.4 as I've yet to see PHP 8 used in production anywhere.
+* Though PHP 8 offers many features that would have been helpful (e.g. `str_starts_with()`, union types, and static return types), this application is coded in PHP 7.4 as I've yet to see PHP 8 used in production anywhere.
 * There is minimum error handling as this is not a production system but rather a demonstration.
 * Emphasis is on correctness and maintainability, not performance. Once unit tests are written, the code can be optimized for performance.
 * Deliberately not using dependency injection on classes. DI is very atypical on vanilla PHP projects not using a framework the encapsulates this (e.g. Laravel).
